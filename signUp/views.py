@@ -17,7 +17,7 @@ def reg(req):
         cno = req.POST.get('phone')
         pwd1 = req.POST.get('password')
         pwd2 = req.POST.get('password-repeat')
-        print(pwd1, pwd2)
+        print(isauth)
         user = User.objects.create_user(username=isauth, email=email, password=pwd1, first_name=name,last_name=cno)
         user.save()
         messages.success(req, "error")
