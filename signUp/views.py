@@ -6,19 +6,28 @@ from django.contrib import messages
 
 # Create your views here.
 def index(req):
-    return render(req, 'index.html')
+    return render(req, 'signup.html')
 
 
 def reg(req):
     if req.method == "POST":
         name = req.POST.get('name')
         isauth=req.POST.get('isauth')
+        if isauth:
+            isauth="yes"
+        else:
+            isauth="no"
         email = req.POST.get('email')
         cno = req.POST.get('phone')
         pwd1 = req.POST.get('password')
         pwd2 = req.POST.get('password-repeat')
         print(isauth)
-        user = User.objects.create_user(username=isauth, email=email, password=pwd1, first_name=name,last_name=cno)
-        user.save()
-        messages.success(req, "error")
+        user=False
+        try:
+            user = User.objects.create_user(username=email, email=name, password=pwd1, first_name=isauth,last_name=cno)
+            user.save()
+        except Exception as e:
+            messages.error(req, e)
+        if user:
+            messages.success(req, "Signup Successful")
     return redirect(to='signUp')
